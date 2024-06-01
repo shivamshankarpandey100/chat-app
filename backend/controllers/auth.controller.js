@@ -56,13 +56,37 @@ export const signup= async (req, res)=>{
     }
 };
 
-export const login=(req,res)=>{
-    res.send("Login user");
-    console.log("Login user");
+export const login= async (req,res)=>{
+    try {
+        const {username,password}=req.body;
+        const user=await User.findOne({username});
+        const isPasswordCorrect= await bcryptjs.compare(password,user?.password || ""); //if user is null then password is null so we use or "" to avoid error in compare function 
+
+        if(!user || !isPasswordCorrect){
+            return res.status(400).json({error:"Invalid UserName or Password"});
+        }
+
+        generateTokenAndSetCookie(user._id, res);
+
+        res.status(200).json({
+            _id:user._id,
+            fullName:user.fullName,
+            username:user.username,
+            profilePic:user.profilePic,
+        });
+    } catch (error) {
+        console.log("Error on Login",error.message);
+        res.status(500).json({error:"Something went wrong or Enternal Server Error"});
+    }
 };
 
-export const logout=(req,res)=>{
-    res.send("Logout user");
-    console.log("logout user");
+export const logout= (req,res)=>{
+    try {
+        res.cookie("jwt","",{maxAge:0});
+        res.status(200).json("Logout Successfully");
+    } catch (error) {
+        console.log("Error on Logout",error.message);
+        res.status(500).json({error:"Something went wrong or Enternal Server Error"});
+    }
 };
 
