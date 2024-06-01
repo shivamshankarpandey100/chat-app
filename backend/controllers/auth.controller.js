@@ -1,3 +1,4 @@
+import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
 
 export const signup= async (req, res)=>{
@@ -15,20 +16,20 @@ export const signup= async (req, res)=>{
 
 
         //HASH PASSWORD HERE
-
-
+        const salt=await bcryptjs.genSalt(10);
+        const hashedPassword=await bcryptjs.hash(password,salt);
         //https://avatar-placeholder.iran.liara.run/
 
-        const boyProfilePic=`https://avatar.iran.liara.run/public/boy?username=${username}`;
-        const girlProfilePic=`https://avatar.iran.liara.run/public/girl?username=${username}`;
+        const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+		const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
 
 
         const newUser=new User({
             fullName,
             username,
-            password,
+            password:hashedPassword,
             gender,
-            profilepic:gender==="male"?boyProfilePic:girlProfilePic
+            profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
         })
 
 
@@ -38,10 +39,11 @@ export const signup= async (req, res)=>{
             _id:newUser._id,
             fullName:newUser.fullName,
             username:newUser.username,
-            profilePic:newUser.profilePic
+            profilePic: newUser.profilePic,
         });
     } catch (error) {
-        
+        console.log("Error on signup",error.message);
+        res.status(500).json({error:"Something went wrong or Enternal Server Error"});
     }
 };
 
