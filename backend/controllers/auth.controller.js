@@ -33,7 +33,9 @@ export const signup= async (req, res)=>{
         })
 
 
-        await newUser.save();   
+        if(newUser){
+            //genrate jwt token
+            await newUser.save();   
 
         res.status(201).json({
             _id:newUser._id,
@@ -41,6 +43,9 @@ export const signup= async (req, res)=>{
             username:newUser.username,
             profilePic: newUser.profilePic,
         });
+        }else{
+            res.status(400).json({error:"Invalid User Data"});
+        }
     } catch (error) {
         console.log("Error on signup",error.message);
         res.status(500).json({error:"Something went wrong or Enternal Server Error"});
