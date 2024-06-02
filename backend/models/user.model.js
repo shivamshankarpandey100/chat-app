@@ -25,7 +25,8 @@ const userSchema=new mongoose.Schema({
         type:String,
         default:""
     }
-});
+    //createdAt and updatedAt will be added by default
+},{timestamps:true});
 
 const User=mongoose.model("User",userSchema);
 
