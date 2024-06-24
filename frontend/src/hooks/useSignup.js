@@ -4,4 +4,4 @@ const useSignup = () => {
   
 }
 
-export default useSignup
+export default useSignup;
