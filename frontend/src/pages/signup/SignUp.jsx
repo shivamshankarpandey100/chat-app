@@ -2,15 +2,18 @@ import React from 'react'
 import GenderCheckbox from './GenderCheckbox.jsx'
 import { useState } from "react";
 import { Link } from 'react-router-dom';
+import useSignup from '../../hooks/useSignup.js';
 
 const SignUp = () => {
 	const [inputs, setInputs] = useState({
 		fullName: "",
 		username: "",
 		password: "",
-		confirmPassword: "",
+		confirmpassword: "",
 		gender: "",
 	});
+
+	const {loading,signup}=useSignup();
 
 	const handleCheckboxChange = (gender) => {
 		setInputs({ ...inputs, gender });
@@ -75,8 +78,8 @@ const SignUp = () => {
 							type='password'
 							placeholder='Confirm Password'
 							className='w-full input input-bordered h-10'
-							value={inputs.confirmPassword}
-							onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
+							value={inputs.confirmpassword}
+							onChange={(e) => setInputs({ ...inputs, confirmpassword: e.target.value })}
 							/>
 					</div>
             
@@ -88,7 +91,8 @@ const SignUp = () => {
 					</Link>
           <div>
 						<button className='btn btn-block btn-sm mt-2 border border-slate-700'>
-							Sign Up
+						{/* {loading ? <span className='loading loading-spinner'></span> : "Sign Up"} */}
+						Sign Up
 						</button>
 					</div>
 
