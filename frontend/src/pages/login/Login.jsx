@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import useLogin from '../../hooks/useLogin.js';
+import useLogin from '../../hooks/useLogin';
 
 const Login = () => {
         const [username, setUsername] = useState('');
@@ -12,7 +12,7 @@ const Login = () => {
 
         const handleSubmit=async(e)=>{
           e.preventDefault();
-          await login({username,password});
+          await login(username,password);
         }
   return (
     <div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
