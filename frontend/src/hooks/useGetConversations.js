@@ -21,10 +21,8 @@ const useGetConversations = () => {
             setLoading(false);
         }
     }
-
-
     getConversation();
- },[]);
+ }, []);
  return {loading,conversations};
 }
 
